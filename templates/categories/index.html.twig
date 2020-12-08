@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CategoriesController!{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <h1 class="text-center">Liste des catégories</h1>
+
+    <div class="row my-4">
+        <div class="col-12 col-md-3 m-auto"><a href="{{path('home_page')}}" class="btn btn-primary m-auto w-75">Retour à l'accueil</a></div>
+        <div class="col-12 offset-md-6 col-md-3 m-auto"><a href="{{path('categories_create')}}" class="btn btn-success m-auto w-75">Ajouter une catégorie</a></div>
+    </div>
+
+    <table class="table table-striped text-center my-4">
+        <tr>
+            <td>Id</td>
+            <td>Nom</td>
+        </tr>
+        {% for categorie in categories %}
+            <tr>
+                <td>{{ categorie.id }}</td>
+                <td>{{ categorie.nom }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>
+{% endblock %}

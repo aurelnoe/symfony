@@ -1,0 +1,42 @@
+{{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-6 form-group mx-auto my-2">
+            {{ form_row(form.designation) }}
+        </div>
+    </div>
+
+    <hr class="my-3 w-50">
+
+    <div class="row">
+        <div class="col-6 form-group mx-auto my-2">
+            {{ form_row(form.prix) }}
+        </div>
+    </div>
+
+    <hr class="my-3 w-50">
+
+    <div class="row">
+        <div class="col-6 form-group mx-auto my-2">
+            {{ form_row(form.couleur) }}
+        </div>
+    </div>
+
+    <hr class="my-4 w-50">
+
+    <div class="row">
+        <div class="col-6 form-group mx-auto my-2">
+            {{ form_row(form.categorie) }}
+        </div>
+    </div>
+
+    <hr class="my-4 w-50">
+
+    <div class="col-md-6 form-group mx-auto my-2">
+        <button type="submit" class="btn btn-success w-100">{{ titleBtn }}</button>
+    </div>
+    <div class="col-md-6 form-group mx-auto my-3">
+        <a class="btn btn-primary w-100" href="{{ path('produit_index') }}">Retour à la liste des produits</a>
+    </div>
+
+{{ form_end(form) }}

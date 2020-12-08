@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+<div class="container my-4 m-auto text-center">
+    <h1 class="text-center"> {{title}} </h1>
+    <hr class="my-3 w-50">
+
+     {{ include('/produit/_form.html.twig') }}
+
+    {# {{ form(form) }} #}
+
+</div>
+    
+{% endblock %}

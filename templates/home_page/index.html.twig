@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HOME PAGE{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">BIENVENUE SUR LA PAGE D'ACCUEIL</h1>
+
+    <div class="row my-4">
+        <div class="col-12 col-md-3 m-auto"><a href="{{path('produit_index')}}" class="btn btn-primary m-auto w-75">Liste des produits</a></div>
+        <div class="col-12 offset-md-6 col-md-3 m-auto"><a href="{{path('categories_index')}}" class="btn btn-primary m-auto w-75">Liste des catégories</a></div>
+    </div>
+
+{% endblock %}

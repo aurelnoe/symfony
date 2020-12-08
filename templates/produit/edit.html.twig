@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+
+<div class="container my-4 m-auto text-center">
+    <h1 class="text-center"> {{title}} </h1>
+    
+    <hr class="my-3 w-50">
+
+    {{ include('/produit/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    
+    <div class="col-12 col-md-6 w-100 mx-auto mt-5 text-center">
+        {{ include('/produit/_delete_form.html.twig') }}
+    </div>
+
+</div>
+{% endblock %}
