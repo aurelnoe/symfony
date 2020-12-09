@@ -4,33 +4,16 @@ namespace App\Form;
 
 use App\Entity\Produit;
 use App\Entity\Categories;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 //use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class ProduitType extends AbstractType
+class ProduitType extends ApplicationType
 {
-    /**
-     * Permet d'avoir la configuration de base d'un champ
-     *
-     * @param string $label
-     * @param string $placeholer
-     * @return array
-     */
-    public function getConfiguration($label, $placeholer, $class)
-    {
-        return [
-            'label' => $label,
-            'attr' => [
-                'placeholder' => $placeholer,
-                'class' => $class,
-            ]
-        ];
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

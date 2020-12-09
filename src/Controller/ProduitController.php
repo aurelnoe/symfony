@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\DBAL\Exception\ConnectionException;
+use App\Service\Exception\ProduitServiceException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -21,25 +23,34 @@ class ProduitController extends AbstractController
      */
     public function index(ProduitService $service): Response
     {        
-        $produits = $service->getProduits();
-
-        return $this->render('produit/index.html.twig', [
-            'controller_name' => 'ProduitController',
-            'title' => 'Liste des produits',
-            'produits' => $produits,
-        ]);
+        try {
+            $produits = $service->getProduits(); 
+            return $this->render('produit/index.html.twig', [
+                'controller_name' => 'ProduitController',
+                'title' => 'Liste des produits',
+                'produits' => $produits,
+                'erreur' => null
+            ]);            
+        } 
+        catch (ProduitServiceException $pse) {
+            return $this->render('produit/index.html.twig', [
+                'controller_name' => 'ProduitController',
+                'title' => 'Liste des produits',
+                'erreur' => $pse->getMessage()
+            ]);
+        }
     }
 
     /**
      * @Route("/new", name="produit_new")
      * 
      * @Route("/{id}/edit", name="produit_edit",requirements={"id","\d+"})
-     *
+     *  
      */
-    public function form(Produit $produit = null,Request $request, EntityManagerInterface $manager)
+    public function AddUpdateProduit(Produit $produit = null, Request $request, EntityManagerInterface $manager)
     {
         //array_map('strToLower', $produit);
-        dump($request);
+        //dump($request);
 
         $title = 'Modifier un produit';
         $titleBtn = 'Modifier';
@@ -51,87 +62,103 @@ class ProduitController extends AbstractController
             $titleBtn = 'Ajouter';
         }
 
-        $form = $this->createForm(ProduitType::class, $produit);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
-            //$manager = $this->getDoctrine()->getManager();
-            $manager->persist($produit);
-            $manager->flush();
-
-            if ($isAdd) 
+        try {
+            $form = $this->createForm(ProduitType::class, $produit);
+    
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) 
             {
-                $this->addFlash(
-                    'success',                                                                         //Type
-                    "Le produit <strong>{$produit->getDesignation()}</strong> a bien été enregistré"    //Message
-                );
+                //$manager = $this->getDoctrine()->getManager();
+                $manager->persist($produit);
+                $manager->flush();
+    
+                if ($isAdd) 
+                {
+                    $this->addFlash(
+                        'success',                                                                         //Type
+                        "Le produit <strong>{$produit->getDesignation()}</strong> a bien été enregistré"    //Message
+                    );
+                }
+                else {
+                    $this->addFlash(
+                        'success',                                                                        
+                        "Le produit <strong>{$produit->getDesignation()}</strong> a été modifié avec succès"    
+                    );
+                }
+    
+                return $this->redirectToRoute('produit_show', ['id' => $produit->getId()]);
             }
-            else {
-                $this->addFlash(
-                    'success',                                                                        
-                    "Le produit <strong>{$produit->getDesignation()}</strong> a été modifié avec succès"    
-                );
-            }
-
-            return $this->redirectToRoute('produit_show', ['id' => $produit->getId()]);
-        }
-
-        if ($form->isSubmitted() && !($form->isValid())) 
-        {
-            if ($isAdd) {
-                $this->addFlash(
-                    'danger',                                                                        
-                    "Le produit <strong>{$produit->getDesignation()}</strong> n'a pas été enregistré"    
-                );
-                $this->addFlash(
-                    'danger',                                                                    
-                    "Veuillez réessayer"   
-                );
-            }
-            else {
-                $this->addFlash(
-                    'danger',                                                                        
-                    "Le produit <strong>{$produit->getDesignation()}</strong> n'a pas été modifié"    
-                );
+    
+            if ($form->isSubmitted() && !($form->isValid())) 
+            {
+                if ($isAdd) {
+                    $this->addFlash(
+                        'danger',                                                                        
+                        "Le produit <strong>{$produit->getDesignation()}</strong> n'a pas été enregistré"    
+                    );
+                    $this->addFlash(
+                        'danger',                                                                    
+                        "Veuillez réessayer"   
+                    );
+                }
+                else {
+                    $this->addFlash(
+                        'danger',                                                                        
+                        "Le produit <strong>{$produit->getDesignation()}</strong> n'a pas été modifié"    
+                    );
+                }
+                
             }
             
+        } 
+        catch (ProduitServiceException $pse) 
+        {
+            return $this->render('produit/new.html.twig', [
+                'controller_name' => 'ProduitController',
+                'form' => $form->createView(),
+                'title' => $title,
+                'titleBtn' => $titleBtn,
+            ]);           
         }
-
-        return $this->render('produit/new.html.twig', [
-            'controller_name' => 'ProduitController',
-            'form' => $form->createView(),
-            'title' => $title,
-            'titleBtn' => $titleBtn,
-        ]);
     }
 
     /**
      * @Route("/show/{id}",name="produit_show",requirements={"id","\d+"},methods={"GET"})
      */
     
-    public function show(ProduitService $service, $id): Response
+    public function show(ProduitService $service,Produit $id): Response
     {
-        $produit = $service->getProduitById($id); //Plus besoin
-
-        return $this->render('produit/show.html.twig', [
-            'controller_name' => 'ProduitController',
-            'produit' => $produit,
-            'title' => 'Détails produit',
-        ]);
+        try 
+        {
+            $produit = $service->getProduitById($id); //Plus besoin   
+        } 
+        catch (ProduitServiceException $pse) 
+        {
+            return $this->render('produit/show.html.twig', [
+                'controller_name' => 'ProduitController',
+                'produit' => $produit,
+                'title' => 'Détails produit',
+            ]);       
+        }
     }
 
     /**
      * @Route("/{id}", name="produit_delete",requirements={"id","\d+"},methods={"DELETE"})
      */
-    public function delete(Request $request,Produit $produit,ProduitService $service): Response
+    public function delete(Request $request,Produit $produit,Produit $id, ProduitService $service): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->get('_token'))) 
+        try 
         {
-            $service->deleteProduit($produit->getId());
+            if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->get('_token'))) 
+            {
+                $service->deleteProduit($id);
+            }
+    
+            return $this->redirectToRoute('produit_index');      
+        } 
+        catch (ConnectionException $ce) {
+            throw $ce;
         }
-
-        return $this->redirectToRoute('produit_index');
     }
 }

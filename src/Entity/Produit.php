@@ -47,6 +47,14 @@ class Produit
      */
     private $categorie;
 
+    public function __toString()
+    {
+        return
+        $this->designation;
+        $this->prix;
+        $this->couleur;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
