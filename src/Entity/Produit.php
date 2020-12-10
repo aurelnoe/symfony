@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+
 use App\Repository\ProduitRepository;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert; 
+
 /**
  * @ORM\Entity(repositoryClass=ProduitRepository::class)
  */
@@ -42,7 +44,7 @@ class Produit
     private $couleur;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="produit")
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produit")
      * @ORM\JoinColumn(nullable=false)
      */
     private $categorie;
@@ -96,12 +98,12 @@ class Produit
         return $this;
     }
 
-    public function getCategorie(): ?Categories
+    public function getCategorie(): ?Categorie
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?Categories $categorie): self
+    public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
 

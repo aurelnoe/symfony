@@ -2,18 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Produit;
+
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert; 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=CategoriesRepository::class)
+ * @ORM\Entity(repositoryClass=CategorieRepository::class)
  * 
  * @UniqueEntity("nom", message="Cette catégorie existe déjà")
  */
-class Categories
+class Categorie
 {
     /**
      * @ORM\Id
@@ -65,22 +68,22 @@ class Categories
     }
 
     /**
-     * @return Collection|Produit[]
+     * @return Collection|  []
      */
     public function getProduit(): Collection
     {
         return $this->produit;
     }
 
-    public function addProduit(Produit $produit): self
-    {
-        if (!$this->produit->contains($produit)) {
-            $this->produit[] = $produit;
-            $produit->setCategorie($this);
-        }
+    // public function addProduit(Produit $produit): self
+    // {
+    //     if (!$this->produit->contains($produit)) {
+    //         $this->produit[] = $produit;
+    //         $produit->setCategorie($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function removeProduit(Produit $produit): self
     {

@@ -1,18 +1,19 @@
 <?php
 namespace App\Service;
 
-use App\Repository\CategoriesRepository;
+use App\Entity\Categorie;
+use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\Exception\DriverException;
-use App\Service\Exception\CategorieServiceException;
 use App\Service\Interfaces\CategorieInterface;
+use App\Service\Exception\CategorieServiceException;
 
-class CategoriesService implements CategorieInterface
+class CategorieService implements CategorieInterface
 {
     private $catRepository;
     private $catManager;
 
-    public function __construct(CategoriesRepository $categorieRepository,EntityManagerInterface $categorieManager) 
+    public function __construct(CategorieRepository $categorieRepository,EntityManagerInterface $categorieManager) 
     {
         $this->catRepository = $categorieRepository;
         $this->catManager = $categorieManager;
@@ -26,11 +27,10 @@ class CategoriesService implements CategorieInterface
         } 
         catch (DriverException $e) {
             throw new CategorieServiceException("Un problème technique est survenu", $e->getCode());
-        }
-        
+        }    
     }
 
-    public function getCategorieById(Object $id)
+    public function getCategorieById(Categorie $id)
     {
         try {
             
@@ -41,12 +41,12 @@ class CategoriesService implements CategorieInterface
         }
     }
 
-    public function addCategorie(Object $categorie)
+    public function addCategorie(Categorie $categorie)
     {
         try {
     
             $this->catManager->persist($categorie);
-            $this->catManager-flush();   
+            $this->catManager->flush();   
         } 
         catch (DriverException $e) {
             throw new CategorieServiceException("Un problème technique est survenu", $e->getCode());
@@ -63,7 +63,7 @@ class CategoriesService implements CategorieInterface
         }
     }
 
-    public function deleteCategorie(Object $id)
+    public function deleteCategorie(Categorie $id)
     {
         try {
             $categorie = $this->categorie->find($id);

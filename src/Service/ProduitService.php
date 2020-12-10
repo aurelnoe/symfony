@@ -30,7 +30,7 @@ class ProduitService implements ProduitInterface
         }
     }
 
-    public function getProduitById(Object $id)
+    public function getProduitById(Produit $id)
     {
         try {
             $produit = $this->produitRepository->find($id);
@@ -41,7 +41,7 @@ class ProduitService implements ProduitInterface
         }
     }
 
-    public function deleteProduit(Object $id)
+    public function deleteProduit(Produit $id)
     {
         try {
             $produit = $this->produitRepository->find($id);

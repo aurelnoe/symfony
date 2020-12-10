@@ -1,4 +1,5 @@
 security:
+    #enable_authenticator_manager: true
     encoders:
         App\Entity\User:
             algorithm: auto
@@ -17,6 +18,9 @@ security:
         main:
             anonymous: lazy
             provider: app_user_provider
+            # form_login: 
+            #     login_path: app_login
+            #     check_path: app_login
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator

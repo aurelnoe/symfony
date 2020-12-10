@@ -3,28 +3,28 @@
 {% block title %}Connectez vous{% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="container bg-light border round w-50 p-5 my-5">
 
-    <form method="post" action={{ path('app_login') }}>
+    <form clss="form" method="POST" action={{ path('app_login') }}>
 
-        {% if hasError %}
+        {% if hasError is defined %}
             <div class="alert alert-danger">Une erreur est survenue, le nom ou le mot de passe est invalide !</div>
         {% endif %}
 
         {% if app.user %}
             <div class="mb-3">
-                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                Vous êtes connecté à {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
             </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <h1 class="h3 mb-3 font-weight-normal text-center">Connectez vous</h1>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" value="{{ last_username }}" name="_username" id="email" class="form-control" required autofocus>   
+            <input type="email" value="{{ last_username }}" name="email" id="email" class="form-control" required autofocus>   
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" name="_password" id="password" class="form-control" required>
+            <input type="password" name="password" id="password" class="form-control" required>
         </div>
 
         <input type="hidden" name="_csrf_token"value="{{ csrf_token('authenticate') }}">
@@ -40,9 +40,9 @@
             </div>
         #}
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Connexion
-        </button>
+        <div class="text-center m-auto w-50">
+            <button class="btn btn-lg btn-primary" type="submit">Connexion</button>
+        </div>
     </form>
 </div>
 {% endblock %}

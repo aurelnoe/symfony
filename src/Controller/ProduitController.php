@@ -25,8 +25,8 @@ class ProduitController extends AbstractController
     {        
         try {
             $produits = $service->getProduits(); 
+            
             return $this->render('produit/index.html.twig', [
-                'controller_name' => 'ProduitController',
                 'title' => 'Liste des produits',
                 'produits' => $produits,
                 'erreur' => null
@@ -34,7 +34,6 @@ class ProduitController extends AbstractController
         } 
         catch (ProduitServiceException $pse) {
             return $this->render('produit/index.html.twig', [
-                'controller_name' => 'ProduitController',
                 'title' => 'Liste des produits',
                 'erreur' => $pse->getMessage()
             ]);
@@ -110,15 +109,21 @@ class ProduitController extends AbstractController
                 }
                 
             }
+
+            return $this->render('produit/new.html.twig', [
+                'form' => $form->createView(),
+                'title' => $title,
+                'titleBtn' => $titleBtn,
+            ]); 
             
         } 
         catch (ProduitServiceException $pse) 
         {
             return $this->render('produit/new.html.twig', [
-                'controller_name' => 'ProduitController',
                 'form' => $form->createView(),
                 'title' => $title,
                 'titleBtn' => $titleBtn,
+                'erreur' => $pse->getMessage()
             ]);           
         }
     }
@@ -136,9 +141,9 @@ class ProduitController extends AbstractController
         catch (ProduitServiceException $pse) 
         {
             return $this->render('produit/show.html.twig', [
-                'controller_name' => 'ProduitController',
                 'produit' => $produit,
                 'title' => 'Détails produit',
+                'erreur' => $pse->getMessage()
             ]);       
         }
     }
@@ -157,8 +162,12 @@ class ProduitController extends AbstractController
     
             return $this->redirectToRoute('produit_index');      
         } 
-        catch (ConnectionException $ce) {
-            throw $ce;
+        catch (ProduitServiceException $pse) 
+        {
+            return $this->render('produit/index.html.twig', [
+                'title' => 'Liste des produits',
+                'erreur' => $pse->getMessage()
+            ]);
         }
     }
 }

@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    {% if erreur %}
+    {% if erreur is defined %}
         <div class="container-fluid">
             <div class="alert alert-danger">{{ erreur }}</div>
         </div>

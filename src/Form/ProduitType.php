@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Produit;
-use App\Entity\Categories;
+use App\Entity\Categorie;
 use App\Form\ApplicationType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -22,7 +22,7 @@ class ProduitType extends ApplicationType
             ->add('prix',MoneyType::class, $this->getConfiguration(false,'prix','form-control m-auto'))
             ->add('couleur',TextType::class, $this->getConfiguration(false,'couleur','form-control m-auto'))
             ->add('categorie', EntityType::class, [
-                'class' => Categories::class ], $this->getConfiguration('catégories','','form-control m-auto'));
+                'class' => Categorie::class ], $this->getConfiguration('catégories','','form-control m-auto'));
             // ->add('save',SubmitType::class,[
             //     'label' => 'Ajouter un produit',
             //     'attr' => [

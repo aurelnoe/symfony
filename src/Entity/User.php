@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert; 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert; 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * 
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -61,6 +64,16 @@ class User implements UserInterface
      */
     private $dateInscription;
 
+    // public function __construc()
+    // {
+    //     $this->dateInscription = new \DateTime(date('Y-m-d'));
+    // }
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
     public function __toString()
     {
         return
@@ -102,7 +115,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_ADMIN';
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -192,5 +205,60 @@ class User implements UserInterface
         $this->dateInscription = $dateInscription;
 
         return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * String representation of object
+     * @link https://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->email,
+            $this->role,
+            $this->password,
+            $this->isVerified,
+            $this->nom,
+            $this->prenom,
+            $this->dateAnniversaire,
+            $this->dateInscription
+        ]);
+    }
+ 
+    /**
+     * Constructs the object
+     * @link https://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        list($this->id,
+            $this->email,
+            $this->role,
+            $this->password,
+            $this->isVerified,
+            $this->nom,
+            $this->prenom,
+            $this->dateAnniversaire,
+            $this->dateInscription) = unserialize($serialized, ['allowed_classes' => false]);
     }
 }
