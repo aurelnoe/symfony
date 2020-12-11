@@ -6,13 +6,13 @@ use App\Security\EmailVerifier;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Service\Interfaces\UserInterface;
+//use App\Service\Interfaces\UserInterface;
 use Doctrine\DBAL\Exception\DriverException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use App\Service\Exception\UserServiceException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserService implements UserInterface
+class UserService
 {
     private $userRepository;
     private $userManager;

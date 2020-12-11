@@ -7,8 +7,12 @@
 
     <form clss="form" method="POST" action={{ path('app_login') }}>
 
-        {% if hasError is defined %}
+        {# {% if hasError is defined %}
             <div class="alert alert-danger">Une erreur est survenue, le nom ou le mot de passe est invalide !</div>
+        {% endif %} #}
+
+        {% if haserror is defined %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
         {% if app.user %}

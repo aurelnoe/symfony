@@ -2,29 +2,29 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use DateTime;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use App\Entity\User;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class RegistrationFormType extends AbstractType
+class RegistrationFormType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email',EmailType::class)
-            ->add('nom', TextType::class)
-            ->add('prenom', TextType::class)
-            ->add('dateAnniversaire',BirthdayType::class)
+            ->add('email',EmailType::class, $this->getConfiguration('Adresse mail',"Choisissez une adresse mail valide",''))
+            ->add('nom', TextType::class, $this->getConfiguration('Nom',"Saisissez votre nom",''))
+            ->add('prenom', TextType::class, $this->getConfiguration('Prénom',"Saisissez votre prénom",''))
+            ->add('dateAnniversaire',BirthdayType::class, $this->getConfiguration('Date de naissance','','js-datepicker'))
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -36,6 +36,7 @@ class RegistrationFormType extends AbstractType
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
+                'label' => 'Mot de passe',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
@@ -49,6 +50,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('passwordConfirm', PasswordType::class,$this->getConfiguration('Confirmation mot de passe',"Veuillez confirmer votre mot de passe",''))
         ;
     }
 

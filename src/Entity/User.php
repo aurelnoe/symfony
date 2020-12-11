@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * 
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="Un utilisateur est déjà inscrit avec cette adresse mail")
  */
 class User implements UserInterface
 {
@@ -38,8 +38,18 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Veuillez saisir un mot de passe ")
+     * @Assert\Length(min=3, max=20, minMessage="Le mot de passe doit faire plus de 6 caractères !",
+     *                                maxMessage="Le mot de passe ne peut pas faire plus de 4096 caractères !")
      */
     private $password;
+
+    /**
+     * @Assert\EqualTo(propertyPath="password",message="Vous n'avez pas saisi le même mot de passe")
+     *
+     * @var [type]
+     */
+    public $passwordConfirm;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -55,7 +65,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="date")
-     * @Assert\NotBlank(message="Veuillez saisir un Prénom")
+     * @Assert\NotBlank(message="Veuillez saisir une date d'anniversaire")
      */
     private $dateAnniversaire;
 
@@ -64,10 +74,10 @@ class User implements UserInterface
      */
     private $dateInscription;
 
-    // public function __construc()
-    // {
-    //     $this->dateInscription = new \DateTime(date('Y-m-d'));
-    // }
+    public function __construc()
+    {
+        $this->dateInscription = new \DateTime();
+    }
 
     /**
      * @ORM\Column(type="boolean")
@@ -77,8 +87,9 @@ class User implements UserInterface
     public function __toString()
     {
         return
-        $this->nom;
-        $this->prenom;
+        $this->nom .
+        $this->prenom .
+        $this->role;
     }
 
     public function getId(): ?int

@@ -29,13 +29,12 @@ class ProduitController extends AbstractController
             return $this->render('produit/index.html.twig', [
                 'title' => 'Liste des produits',
                 'produits' => $produits,
-                'erreur' => null
             ]);            
         } 
         catch (ProduitServiceException $pse) {
             return $this->render('produit/index.html.twig', [
                 'title' => 'Liste des produits',
-                'erreur' => $pse->getMessage()
+                'haserror' => $pse->getMessage()
             ]);
         }
     }
@@ -136,7 +135,12 @@ class ProduitController extends AbstractController
     {
         try 
         {
-            $produit = $service->getProduitById($id); //Plus besoin   
+            $produit = $service->getProduitById($id); //Plus besoin 
+              
+            return $this->render('produit/show.html.twig', [
+                'produit' => $produit,
+                'title' => 'Détails produit',
+            ]);
         } 
         catch (ProduitServiceException $pse) 
         {

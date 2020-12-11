@@ -3,11 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Categorie;
-use Symfony\Component\Form\AbstractType;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategorieType extends AbstractType
+class CategorieType extends ApplicationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

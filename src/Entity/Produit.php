@@ -52,8 +52,8 @@ class Produit
     public function __toString()
     {
         return
-        $this->designation;
-        $this->prix;
+        $this->designation .
+        $this->prix .
         $this->couleur;
     }
 

@@ -46,7 +46,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             && $request->isMethod('POST');
     }
 
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request)    //Identification
     {
         //dump($request);
         $credentials = [

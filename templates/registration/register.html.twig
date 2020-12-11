@@ -15,8 +15,10 @@
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.dateAnniversaire) }}
         {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
+            label: 'Mot de passe',
+            placeholder: 'mdr'
         }) }}
+        {{ form_row(registrationForm.passwordConfirm) }}
         {{ form_row(registrationForm.agreeTerms) }}
     <div class="text-center">    
         <button type="submit" class="btn btn-lg btn-primary w-50">Inscription</button>
@@ -25,4 +27,6 @@
     {{ form_end(registrationForm) }}
 
 </div>
+
 {% endblock %}
+
