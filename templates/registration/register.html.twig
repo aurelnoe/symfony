@@ -15,9 +15,10 @@
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.dateAnniversaire) }}
         {{ form_row(registrationForm.plainPassword, {
-            label: 'Mot de passe',
-            placeholder: 'mdr'
-        }) }}
+            'label': 'Mot de passe',
+            'placeholder': 'saisissez un mot de passe'
+            })
+        }}
         {{ form_row(registrationForm.passwordConfirm) }}
         {{ form_row(registrationForm.agreeTerms) }}
     <div class="text-center">    

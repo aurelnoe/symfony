@@ -25,6 +25,7 @@
             <td class="col-2">prix</td>
             <td class="col-2">Couleur</td>
             <td class="col-2">Catégorie</td>
+            <td class="col-2">Clients</td>
         </tr>
         {% for produit in produits %}
             <tr>
@@ -33,13 +34,17 @@
                 {% endif %}
                 <td class="m-auto"><a href="{{path('produit_edit',{'id':produit.id}) }}" class="btn btn-primary">Modifier</a></td>
                 <td class="m-auto"><a href="{{path('produit_show',{'id':produit.id}) }}" class="btn btn-success">Détails</a></td>
-                <td class="h2">{{ produit.id }}</td>
+                <td class="h2">
+                    <span class="badge badge-primary rounded">{{ produit.id }}</span>
+                </td>
                 <td class="h2">{{ produit.designation }}</td>
-                <td class="h2">{{ produit.prix }}</td>
+                <td class="h2">
+                    <span class="badge badge-primary rounded">{{ produit.prix | number_format(2, ',', ' ')}}</span>
+                </td>
                 <td class="h2">{{ produit.couleur }}</td>
                 <td class="h2">{{ produit.categorie.nom }}</td>
+                <td class="h2">{{ produit.clients | length }}</td>
             </tr>
         {% endfor %}
     </table>
-    
 {% endblock %}

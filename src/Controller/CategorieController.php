@@ -5,11 +5,12 @@ namespace App\Controller;
 use App\Entity\Categorie;
 use App\Form\CategorieType;
 use App\Service\CategorieService;
-use App\Service\Exception\CategorieServiceException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\Exception\CategorieServiceException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/categorie")
@@ -38,6 +39,8 @@ class CategorieController extends AbstractController
 
     /**
      * @Route("/create", name="categorie_create")
+     * 
+     * @IsGranted("ROLE_USER")
      */
     public function create(Request $request, CategorieService $service): Response
     {

@@ -1,0 +1,42 @@
+{{ form_start(form) }}
+<div class="container w-50 m-auto clearfix">
+    <div class="alert alert-light border">
+        <div class="row">
+            <div class="col-6 form-group mx-auto my-2">
+                {{ form_row(form.nom) }}
+            </div>
+        </div>
+
+        <hr class="my-3 w-50">
+
+        <div class="row">
+            <div class="col-6 form-group mx-auto my-2">
+                {{ form_row(form.prenom) }}
+            </div>
+        </div>
+
+        <hr class="my-3 w-50">
+
+        <div class="row">
+            <div class="col-6 form-group mx-auto my-2">
+                {{ form_row(form.produit) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 form-group mx-auto my-2">
+                {# {{ path('adresse_new') }} #}
+                {{ form_row(form.adresse) }}
+            </div>
+        </div>
+
+        <hr class="my-4 w-50">
+
+        <div class="text-center my-4">
+            <button class="btn btn-lg btn-success w-50">
+                <i class="fas fa-check"></i>
+                {{ button_label|default('Ajouter') }}
+            </button>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

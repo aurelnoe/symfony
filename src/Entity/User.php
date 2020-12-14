@@ -76,6 +76,7 @@ class User implements UserInterface
 
     public function __construc()
     {
+        $this->dateAnniversaire = new \DateTime();
         $this->dateInscription = new \DateTime();
     }
 
@@ -89,6 +90,9 @@ class User implements UserInterface
         return
         $this->nom .
         $this->prenom .
+        $this->dateAnniversaire .
+        $this->dateInscription .
+        $this->email .
         $this->role;
     }
 

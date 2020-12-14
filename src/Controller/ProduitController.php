@@ -9,8 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\DBAL\Exception\ConnectionException;
 use App\Service\Exception\ProduitServiceException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -24,7 +25,9 @@ class ProduitController extends AbstractController
     public function index(ProduitService $service): Response
     {        
         try {
-            $produits = $service->getProduits(); 
+            $produits = $service->getProduits();
+            // $clients = $service->getClients($produits); 
+            //var_dump($produits);
             
             return $this->render('produit/index.html.twig', [
                 'title' => 'Liste des produits',
@@ -44,6 +47,7 @@ class ProduitController extends AbstractController
      * 
      * @Route("/{id}/edit", name="produit_edit",requirements={"id","\d+"})
      *  
+     * @Security("is_granted('ROLE_USER')")
      */
     public function AddUpdateProduit(Produit $produit = null, Request $request, EntityManagerInterface $manager)
     {
@@ -129,6 +133,8 @@ class ProduitController extends AbstractController
 
     /**
      * @Route("/show/{id}",name="produit_show",requirements={"id","\d+"},methods={"GET"})
+     * 
+     * @IsGranted("ROLE_USER")
      */
     
     public function show(ProduitService $service,Produit $id): Response
@@ -154,6 +160,8 @@ class ProduitController extends AbstractController
 
     /**
      * @Route("/{id}", name="produit_delete",requirements={"id","\d+"},methods={"DELETE"})
+     * 
+     * @Security("is_granted('ROLE_USER')")
      */
     public function delete(Request $request,Produit $produit,Produit $id, ProduitService $service): Response
     {
